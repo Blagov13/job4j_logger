@@ -1,22 +1,24 @@
 package ru.job4j.logger;
 
+import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class FileLogger implements Logger {
-    private final boolean append;
+    private final BufferedWriter writer;
 
-    public FileLogger(boolean append) {
-        this.append = append;
+    public FileLogger(String filePath) throws IOException {
+            writer = Files.newBufferedWriter(Paths.get(filePath));
     }
 
     @Override
     public void log(String message) {
-        try (FileOutputStream fileOutputStream = new FileOutputStream("log.txt", append)) {
-            fileOutputStream.write(message.getBytes());
-            fileOutputStream.write("\n".getBytes());
+        try {
+            writer.write(message + "\n");
         } catch (IOException e) {
-            System.out.println("Error");
+            throw new IllegalStateException();
         }
     }
 }
