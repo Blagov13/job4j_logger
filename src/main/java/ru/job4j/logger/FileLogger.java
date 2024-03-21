@@ -7,18 +7,19 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class FileLogger implements Logger {
-    private final BufferedWriter writer;
+    private final String fileName;
 
-    public FileLogger(String filePath) throws IOException {
-            writer = Files.newBufferedWriter(Paths.get(filePath));
+    public FileLogger(String fileName) {
+        this.fileName = fileName;
     }
 
     @Override
     public void log(String message) {
-        try {
-            writer.write(message + "\n");
+        try (FileOutputStream fileOutputStream = new FileOutputStream(this.fileName, true)) {
+            fileOutputStream.write(message.getBytes());
+            fileOutputStream.write("\n".getBytes());
         } catch (IOException e) {
-            throw new IllegalStateException();
+            System.out.println("Error");
         }
     }
 }

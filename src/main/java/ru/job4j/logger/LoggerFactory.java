@@ -1,24 +1,18 @@
 package ru.job4j.logger;
 
-import java.io.IOException;
 import java.util.Properties;
 
 public class LoggerFactory {
-    private static final String LOGGER_STRATEGY_KEY = "logger.strategy";
+    public static Logger getLogger(Properties properties) {
+        String logTarget = properties.getProperty("log.target");
 
-    public Logger getLogger(Properties properties) throws IOException {
-        String strategy = properties.getProperty(LOGGER_STRATEGY_KEY);
-        switch (strategy) {
-            case "console":
-                return new ConsoleLogger();
-            case "file":
-                String filePath = properties.getProperty("logger.filePath");
-                if (filePath == null) {
-                    throw new IllegalArgumentException();
-                }
-                return new FileLogger(filePath);
-            default:
-                throw new IllegalArgumentException();
+        if ("CONSOLE".equals(logTarget)) {
+            return new ConsoleLogger();
+        } else if ("FILE".equals(logTarget)) {
+            String fileName = properties.getProperty("log.file");
+            return new FileLogger(fileName);
+        } else {
+            throw new IllegalArgumentException();
         }
     }
 }
