@@ -1,8 +1,8 @@
 package ru.job4j.logger;
 
-public class ConsoleLogger implements Logger {
+public class ConsoleLogger implements Appender {
     @Override
-    public void log(String message) {
+    public void append(String message) {
         System.out.println(message);
     }
 }
