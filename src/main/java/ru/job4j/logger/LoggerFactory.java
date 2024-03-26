@@ -10,6 +10,15 @@ import java.util.Properties;
 public class LoggerFactory implements Logger {
     private List<Appender> appenders = new ArrayList<>();
 
+    private static LoggerFactory instance = null;
+
+    public static LoggerFactory getInstance() {
+        if (instance == null) {
+            instance = new LoggerFactory();
+        }
+        return instance;
+    }
+
     public LoggerFactory() {
         Properties properties = new Properties();
         try (InputStream input = new FileInputStream("application.properties")) {
@@ -27,9 +36,34 @@ public class LoggerFactory implements Logger {
     }
 
     @Override
-    public void log(String message) {
+    public void log(String message, LogLevel level) {
         for (Appender appender : appenders) {
             appender.append(message);
         }
+    }
+
+    @Override
+    public void error(String message) {
+        log(message, LogLevel.ERROR);
+    }
+
+    @Override
+    public void warning(String message) {
+        log(message, LogLevel.WARNING);
+    }
+
+    @Override
+    public void trace(String message) {
+        log(message, LogLevel.TRACE);
+    }
+
+    @Override
+    public void debug(String message) {
+        log(message, LogLevel.DEBUG);
+    }
+
+    @Override
+    public void info(String message) {
+        log(message, LogLevel.INFO);
     }
 }

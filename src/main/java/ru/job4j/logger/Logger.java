@@ -1,10 +1,10 @@
 package ru.job4j.logger;
 
-import org.apache.log4j.lf5.LogLevel;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public interface Logger {
-    void log(String message);
+    void log(String message, LogLevel level);
+    void error(String message);
+    void warning(String message);
+    void trace(String message);
+    void debug(String message);
+    void info(String message);
 }
