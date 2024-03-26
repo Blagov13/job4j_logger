@@ -16,4 +16,8 @@ public enum LogLevel {
     public String getValue() {
         return value;
     }
+
+    public int getOrdinal() {
+        return this.ordinal();
+    }
 }

@@ -10,6 +10,8 @@ import java.util.Properties;
 public class LoggerFactory implements Logger {
     private List<Appender> appenders = new ArrayList<>();
 
+    private LogLevel minimumLogLevel;
+
     private static LoggerFactory instance = null;
 
     public static LoggerFactory getInstance() {
@@ -30,6 +32,8 @@ public class LoggerFactory implements Logger {
             } else if ("console".equals(appenderType)) {
                 appenders.add(new ConsoleLogger());
             }
+
+            minimumLogLevel = LogLevel.valueOf(properties.getProperty("minLevel"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -37,8 +41,10 @@ public class LoggerFactory implements Logger {
 
     @Override
     public void log(String message, LogLevel level) {
-        for (Appender appender : appenders) {
-            appender.append(message);
+        if (level.ordinal() >= minimumLogLevel.ordinal()) {
+            for (Appender appender : appenders) {
+                appender.append(message);
+            }
         }
     }
 
